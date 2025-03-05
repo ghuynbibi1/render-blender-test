@@ -45,7 +45,7 @@ jobs:
       working-directory: ${{ github.workspace }}
       run: |
         mkdir -p render/tronghang-emb
-        ./blender-4.2.3-linux-x64/blender -b tronghang-emb.blend -noaudio -o render/tronghang-emb -E CYCLES -s 201 -e 202 -a -F 'PNG' --python-expr "import bpy; bpy.context.scene.cycles.samples = 8"
+        ./blender-4.2.3-linux-x64/blender -b tronghang-emb.blend --python script.py -noaudio -o render/tronghang-emb -E CYCLES -s 201 -e 202 -a -F 'PNG' --python-expr "import bpy; bpy.context.scene.cycles.samples = 8"
       
     - name: Upload result
       uses: 'actions/upload-artifact@v4'
