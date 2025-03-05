@@ -13,8 +13,8 @@ bpy.context.preferences.addons["cycles"].preferences.get_devices()
 
 # Select all available CUDA devices
 for device in prefs.devices:
-    if device.type == 'CUDA':
-        device.use = True
+    print(device)
+    device.use = True
 
 # Save settings
 bpy.ops.wm.save_userpref()
@@ -38,3 +38,5 @@ print("Compute Device Type:", prefs.compute_device_type)
 print("Available Devices:")
 for device in prefs.devices:
     print(f"- {device.name} ({device.type}) - Enabled: {device.use}")
+
+bpy.ops.wm.save_userpref()
