@@ -15,6 +15,12 @@ jobs:
     - name: Check CPU Info
       run: lscpu
 
+    - name: Check GPU Info
+      run: |
+        lspci | grep -i nvidia  # Check for NVIDIA GPU
+        lspci | grep -i amd     # Check for AMD GPU
+        glxinfo | grep "OpenGL renderer" || echo "No GPU detected"
+
     - name: Cache Blender
       id: cache-blender
       uses: actions/cache@v3
@@ -45,7 +51,7 @@ jobs:
       working-directory: ${{ github.workspace }}
       run: |
         mkdir -p render/tronghang-emb
-        ./blender-4.2.3-linux-x64/blender -b tronghang-emb.blend --python script.py -noaudio -o render/tronghang-emb -E CYCLES -s 201 -e 202 -a -F 'PNG' --python-expr "import bpy; bpy.context.scene.cycles.samples = 8"
+        ./blender-4.2.3-linux-x64/blender -b tronghang-emb.blend --python script.py -noaudio -o render/tronghang-emb -E CYCLES -s 201 -e 201 -a -F 'PNG' -t 4
       
     - name: Upload result
       uses: 'actions/upload-artifact@v4'
