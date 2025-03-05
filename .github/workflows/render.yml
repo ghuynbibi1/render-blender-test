@@ -12,14 +12,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Check CPU Info
-      run: lscpu
-
     - name: Check GPU Info
       run: |
-        lspci | grep -i nvidia  # Check for NVIDIA GPU
-        lspci | grep -i amd     # Check for AMD GPU
-        glxinfo | grep "OpenGL renderer" || echo "No GPU detected"
+        lspci | grep -i nvidia || true  # Check for NVIDIA GPU
+        lspci | grep -i amd || true    # Check for AMD GPU
+        glxinfo | grep "OpenGL renderer" || echo "No GPU detected" || true
 
     - name: Cache Blender
       id: cache-blender
