@@ -1,0 +1,52 @@
+name: render
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Cache Blender
+      id: cache-blender
+      uses: actions/cache@v3
+      with:
+        path: blender-4.2.3-linux-x64
+        key: blender-4.2.3-linux-x64
+
+    - name: Install Blender
+      if: steps.cache-blender.outputs.cache-hit != 'true'
+      run: |
+        wget https://download.blender.org/release/Blender4.2/blender-4.2.3-linux-x64.tar.xz
+        tar xf blender-4.2.3-linux-x64.tar.xz
+
+    - name: Cache file
+      id: cache-file
+      uses: actions/cache@v3
+      with:
+        path: tronghang-emb.blend
+        key: tronghang-emb.blend
+
+    - name: Download file
+      if: steps.cache-file.outputs.cache-hit != 'true'
+      run: |
+        pip install gdown
+        gdown --id 1UiMoMSW6obVYfe4G3bwIQg-9oGKMQpSi -O tronghang-emb.blend
+
+    - name: Render
+      working-directory: ${{ github.workspace }}
+      run: |
+        mkdir -p render/tronghang-emb
+        ./blender-4.2.3-linux-x64/blender -b tronghang-emb.blend -noaudio -o render/tronghang-emb -E CYCLES -s 201 -e 202 -a -F 'PNG'
+      
+    - name: Upload result
+      uses: 'actions/upload-artifact@v3'
+      with:
+        name: upload
+        path: ${{ github.workspace }}/render
+
