@@ -20,8 +20,8 @@ for device in prefs.devices:
 bpy.ops.wm.save_userpref()
 
 # Set samples to 8 for both viewport and final render
-bpy.context.scene.cycles.samples = 8  # Final render
-bpy.context.scene.cycles.preview_samples = 8  # Viewport render (optional)
+bpy.context.scene.cycles.samples = 1024  # Final render
+bpy.context.scene.cycles.preview_samples = 1024  # Viewport render (optional)
 
 # Enable AI Denoising (OptiX for NVIDIA GPUs)
 bpy.context.scene.cycles.use_denoising = True
