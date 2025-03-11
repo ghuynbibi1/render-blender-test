@@ -35,21 +35,21 @@ jobs:
       id: cache-file
       uses: actions/cache@v3
       with:
-        path: tronghang-emb.blend
-        key: tronghang-emb.blend
+        path: TP_ht_new.blend
+        key: TP_ht_new.blend
 
     - name: Download file
       if: steps.cache-file.outputs.cache-hit != 'true'
       run: |
         pip install gdown
-        gdown --id 1UiMoMSW6obVYfe4G3bwIQg-9oGKMQpSi -O tronghang-emb.blend
+        gdown --id 1q-7fO3GAeQMaEsZw3EqQBup3dCDsz8Dt -O TP_ht_new.blend
 
     - name: Render
       working-directory: ${{ github.workspace }}
       run: |
-        mkdir -p render/tronghang-emb
+        mkdir -p render/
         ./blender-4.2.3-linux-x64/blender -b --python script.py
-        ./blender-4.2.3-linux-x64/blender -b tronghang-emb.blend --python script.py -noaudio -o render/tronghang-emb -E CYCLES -s 202 -e 250 -a -F 'PNG' -t 4
+        ./blender-4.2.3-linux-x64/blender -b TP_ht_new.blend --python script.py -noaudio -o render/#### -E CYCLES -s 100 -e 105 -a -F 'PNG' -t 4
       
     - name: Upload result
       uses: 'actions/upload-artifact@v4'
